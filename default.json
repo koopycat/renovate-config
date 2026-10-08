@@ -1,0 +1,61 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Viktor's Renovate baseline: few PRs, none of them fresh, majors on request, security fixes at once.",
+  "extends": ["config:best-practices"],
+  "ignorePresets": [":pinDevDependencies", ":maintainLockFilesWeekly"],
+  "timezone": "Europe/Berlin",
+  "schedule": ["before 6am on monday"],
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "prConcurrentLimit": 5,
+  "semanticCommits": "enabled",
+  "semanticCommitType": "build",
+  "semanticCommitScope": "deps",
+  "dependencyDashboard": true,
+  "minimumReleaseAge": "7 days",
+  "internalChecksFilter": "strict",
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "labels": ["security"]
+  },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on the first day of the month"]
+  },
+  "packageRules": [
+    {
+      "description": "One PR a week for everything minor or patch",
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "routine"
+    },
+    {
+      "description": "Patches may arrive sooner",
+      "matchUpdateTypes": ["patch"],
+      "minimumReleaseAge": "3 days"
+    },
+    {
+      "description": "Majors wait a month and only get a PR when ticked on the dashboard",
+      "matchUpdateTypes": ["major"],
+      "minimumReleaseAge": "30 days",
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Image digest pins and bumps share one PR instead of one per image",
+      "matchUpdateTypes": ["pin", "pinDigest", "digest"],
+      "groupName": "digests"
+    },
+    {
+      "description": "node-version: 24 in a workflow is a floating major, not a pin to bump",
+      "matchManagers": ["github-actions"],
+      "matchDepNames": ["node"],
+      "enabled": false
+    },
+    {
+      "description": "GitHub Actions in their own PR",
+      "matchManagers": ["github-actions"],
+      "groupName": "actions",
+      "semanticCommitType": "ci",
+      "semanticCommitScope": "deps"
+    }
+  ]
+}
