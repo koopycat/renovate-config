@@ -1,7 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": "Viktor's Renovate baseline: few PRs, none of them fresh, majors on request, security fixes at once.",
-  "extends": ["config:best-practices"],
+  "extends": [
+    "config:best-practices",
+    "customManagers:dockerfileVersions",
+    "customManagers:githubActionsVersions"
+  ],
   "ignorePresets": [":pinDevDependencies", ":maintainLockFilesWeekly"],
   "timezone": "Europe/Berlin",
   "schedule": ["before 6am on monday"],
@@ -15,6 +19,8 @@
   "minimumReleaseAge": "7 days",
   "internalChecksFilter": "strict",
   "osvVulnerabilityAlerts": true,
+  "dependencyDashboardOSVVulnerabilitySummary": "unresolved",
+  "postUpdateOptions": ["gomodTidy"],
   "vulnerabilityAlerts": {
     "labels": ["security"]
   },
